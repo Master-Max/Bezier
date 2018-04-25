@@ -11,6 +11,10 @@ struct Point {
 	float y;
 };
 
+struct Point *p, *B;
+
+glm::vec2* BB;
+
 float biCo(int tn, int k){//Binomial Coefficient
 	float tmpA = 1.0, tmpB = 1.0, tmpC = 1.0, result , c;
 	//int c;
@@ -26,8 +30,41 @@ float biCo(int tn, int k){//Binomial Coefficient
 	return result;
 }
 
+int thing;
+/*
+void shrinkRay(){
+	for(int i = 0; i<thing; i++){
+		printf("%f %f\n",B[i].x,B[i].y);
 
+		B[i].x *= .1;
+		B[i].y *= .1;
 
+		printf("%f %f\n",B[i].x,B[i].y);
+	}
+}
+*/
+void keyF(unsigned char key, int x, int y){
+	printf("keypress: %c\n", key);
+}
+
+void render(){
+	glClearColor(0,0,0,0);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glBegin(GL_LINES);
+	glColor3f(0.259f, 0.714f, 0.957f);
+	for(int i = 0; i < thing-1; i++){
+		//glVertex2d(B[i].x, B[i].y);
+		glVertex2f(BB[i].x, BB[i].y);
+		glVertex2f(BB[i+1].x, BB[i+1].y);
+	}
+	glEnd();
+	glutSwapBuffers();
+}
+
+void mloop(int v){
+	render();
+	glutTimerFunc(1000/60, mloop, v);
+}
 
 
 int main(int argc,char** argv,char** envp)
@@ -53,7 +90,7 @@ int main(int argc,char** argv,char** envp)
 	printf("point count: %d\n",pointCount/2);
 	printf("n: %d\n",n-1);
 
-	struct Point* p;//Array of Points Points
+	//struct Point* p;//Array of Points Points
 
 	p = new Point[n];
 	int j = 2;
@@ -74,10 +111,11 @@ int main(int argc,char** argv,char** envp)
 	}*/
 
 
-	int thing = (1/stepSize);
+	thing = (1/stepSize);
 	//printf("================\nTotal Points: %d\n", thing);
-	struct Point* B = new Point[thing];
-
+	//struct Point* B;
+	B = new struct Point[thing];
+	BB = new glm::vec2[thing];
 	int bC = 0;
 
 	float totX, totY;
@@ -112,7 +150,18 @@ int main(int argc,char** argv,char** envp)
 	printf("#=#=#=#=#=#=#=#=#=#\n");
 	for(i = 0; i<thing; i++){
 		printf("%f %f\n",B[i].x,B[i].y);
+		BB[i].x = B[i].x;
+		BB[i].y = B[i].y;
 		//printf("B[%d].x = %f\n",i,B[i].x);
+	}
+
+	for(int i = 0; i<thing; i++){
+		printf("%f %f\n",B[i].x,B[i].y);
+
+		BB[i].x *= .1;
+		BB[i].y *= .1;
+
+		printf("%f %f\n",B[i].x,B[i].y);
 	}
 
 	glutInit(&argc, argv);
